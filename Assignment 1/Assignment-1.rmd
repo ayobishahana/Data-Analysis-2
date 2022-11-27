@@ -134,4 +134,3 @@ reg12 <- lm_robust(lnwage ~ ed_BA + ed_MA + ed_Profess + ed_PhD, data = data %>%
 reg13 <- lm_robust(lnwage ~ ed_BA + ed_MA + ed_Profess + ed_PhD + female*ed_BA + female*ed_MA + female*ed_Profess + female*ed_PhD, data=data, se_type = "HC1")
 huxreg(reg11, reg12, reg13,statistics = c(N = "nobs", R2 = "r.squared"))
 ```
-
