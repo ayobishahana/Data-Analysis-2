@@ -10,11 +10,11 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE)
 ```
 
 ```{r include=FALSE}
+# loading packages
 library(tidyverse)
 library(haven)
 library(data.table)
 library(rms)
-library(lspline)
 library(modelsummary)
 library(pscl)
 library(esquisse)
@@ -25,15 +25,15 @@ library(fixest)
 library(readxl)
 library(estimatr)
 library(kableExtra)
-library(corrplot)
 ```
 
 ```{r include=FALSE}
-data_in <- "/Users/shahanaayobi/Desktop/RWork/"
-data <- read_csv(paste0(data_in,"raw_data.csv"))
+# Loading the data
+data <- read_csv(url("https://raw.githubusercontent.com/ayobishahana/Data-Analysis-2/main/TERM/Raw%20Data/raw_data.csv"))
 ```
 
 ```{r warning=FALSE, include=FALSE}
+# Cleaning the data
 colnames(data) <- c("year", "year_code", "country", "country_code", "GCF", "GDP_percap",  "unemployment_rate", "gini_index") 
 
 data <- data %>%  mutate_at(c("GCF", "GDP_percap", "unemployment_rate", "gini_index"), as.numeric) %>% mutate_at(vars("GCF", "GDP_percap",  "unemployment_rate", "gini_index"), funs(round(., 2))) %>% mutate(lnGDP=log(GDP_percap))
@@ -55,6 +55,7 @@ The data includes 217 observations for year 2018 where each observation is count
 Table 1 shows the descriptive statistics for dependent, explanatory, and control variables. It can be inferred that all of the variables have higher means than medians, meaning the distribution of the variables are skewed to right. Therefore, for Variables like `GDP per capita`, I took the logarithm of it to be able to interpret the results in percentages and transform the distribution closer to normal. The rest of my variables are already in percentages, Taking their logarithm would worsen the estimation of the models.
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
+# Data summary
 P95 <- function(x){quantile(x,0.95,na.rm=T)}
 P05 <- function(x){quantile(x,0.05,na.rm=T)}
 datasummary( (`Gini Index`= gini_index) + (`Gross Capital Formation (% of GDP)`= GCF) + (`GDP per Capita`= GDP_percap) + (`Unemployment Rate (% of Labor Force)`=unemployment_rate) ~
